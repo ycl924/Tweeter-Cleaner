@@ -6,6 +6,8 @@ require_relative 'api'
 class Controller
   def initialize
     @view = View.new
+    @api_call = API_Call.new
+    @token = ""
   end
 
   def welcome
@@ -13,7 +15,10 @@ class Controller
   end
 
   def login
-    return @view.login
+    @view.login
+    oauth_headers = @api_call.login
+    @view.logged_in(oauth_headers[0])
+    @token = oauth_headers[1]
   end
 
 def choose_time
@@ -32,6 +37,9 @@ def choose_time
   when 6
     older_than = @view.custom_time
   when 7 then older_than = Time.now
+  else
+    puts "Let's try this again."
+    choose_time
   end
   return older_than
 end
@@ -42,9 +50,8 @@ end
 
   def list(type)
     @view.preamble(type)
-    @api_call = API_Call.new
     time = choose_time
-    collection = @api_call.get_all(type, time)
+    collection = @api_call.collect(type, time, @token)
     if collection.empty?
       @view.not_found(type)
     else
@@ -73,13 +80,12 @@ end
     input = @view.dms_preamble
     if input == "\n"
       timestamp = @view.custom_time.to_i * 1000 # Fucking Ruby is in seconds not ms
-      @api_call = API_Call.new
       dm_list = @api_call.get_dms(timestamp)
       if dm_list.empty? || dm_list == "error"
         @view.not_found("dms")
       else
         confirm = @view.confirm("dms", dm_list.size, Time.at(timestamp / 1000))
-        delete_dms(dm_list) if confirm =="y"
+        delete_dms(dm_list) if confirm == "y"
       end
     end
   end

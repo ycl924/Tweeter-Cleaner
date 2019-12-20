@@ -12,22 +12,33 @@ class View
     puts ""
   end
 
-  def login
-    puts "To delete your tweets you will have to login"
-    puts "Please enter your username"
-    username = gets.chomp
-    puts "Hi, #{username}"
-    puts "Next, we need you to login to your Twitter account to give the app access to your data"
-    puts "Twitter doesn't give us your password, don't worry, there's this"
-    puts "neat mechanism called OAuth to get access without it."
-    puts "Press Enter and a web browser window will open for you to login."
-    puts "Please press Enter to continue"
+  def press_enter
+    puts "Please press Enter to continue."
     loop do
       input = gets
       puts "Press Enter, nothing else" if input != "\n"
       break if input == "\n"
     end
-    return username
+  end
+
+  def login
+    puts "To delete your tweets we need you to login to your Twitter account"
+    puts "so they app can have access to your data."
+    puts ""
+    puts "Twitter doesn't give us your password, don't worry, there's this"
+    puts "neat mechanism called OAuth to get access without it."
+    puts ""
+    puts "Press Enter and a web browser window will open for you to login."
+    puts "After logging in to Twitter, it will show a 6 digit PIN number."
+    puts "Come back to the APP and enter it."
+    puts ""
+    press_enter
+  end
+
+  def logged_in(user)
+    puts "You are now logged in. Your username is #{user['screen_name']}."
+    puts "We will now start fetching your tweets."
+    press_enter
   end
 
   def choose_action
@@ -43,6 +54,7 @@ class View
     puts "First we will gather all your #{type.capitalize} from the Twitter API"
     puts "请稍后"
     puts "..."
+    puts ""
   end
 
   def not_found(type)
@@ -79,11 +91,7 @@ class View
   def finished
     puts "Well, finished deleting."
     puts "Press Enter to go back to the main menu"
-    loop do
-      input = gets
-      puts "Press Enter, nothing else" if input != "\n"
-      break if input == "\n"
-    end
+    press_enter
   end
 
   def set_time
