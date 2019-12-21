@@ -7,7 +7,7 @@ class View
     puts "With this app you'll be able to delete your Tweets and likes so nobody can"
     puts "fire you for something stupid you said once five years ago while drunk and angry."
     puts ""
-    puts "Remember, the best only way to have real privacy is to not leave a paper trail."
+    puts "Remember, the only way to have real privacy is to not leave your data around."
     puts ""
   end
 
