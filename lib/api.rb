@@ -100,8 +100,7 @@ class API_Call
     options = {}
     auth = SimpleOAuth::Header.new(verb.to_s.upcase, url, options, credentials.merge(ignore_extra_keys: true))
     headers = {}
-    headers[:authorization] = auth.to_s
-    binding.pry
+    headers[:authorization] = auth.t
     return headers
   end
 
@@ -141,7 +140,6 @@ class API_Call
       if !response["next_cursor"]
         to_delete = list.select { |dm| dm['created_timestamp'].to_i < timestamp }
         id_array = to_delete.map { |dm| dm["id"].to_i }
-        binding.pry
         return id_array
       else
         get_dms(timestamp, list, response["next_cursor"])
