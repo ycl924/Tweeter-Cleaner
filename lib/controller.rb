@@ -16,9 +16,18 @@ class Controller
 
   def login
     @view.login
+    go_login
+  end
+
+  def go_login
     oauth_headers = @api_call.login
-    @view.logged_in(oauth_headers[0])
-    @token = oauth_headers[1]
+    if oauth_headers != "error"
+      @view.logged_in(oauth_headers[0])
+      @token = oauth_headers[1]
+    else
+      @view.authenticate_failed
+      go_login
+    end
   end
 
 def choose_time

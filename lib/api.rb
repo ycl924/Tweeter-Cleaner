@@ -38,15 +38,27 @@ class API_Call
     return hash[type.to_sym]
   end
 
+  def fetch_pin
+    pin = gets.chomp
+    if pin.size != 7
+      puts "PIN format is not correct. Please input a seven-digit PIN"
+      fetch_pin
+    end
+  end
+
   def login
     request_token = get_request_token
     authenticate(request_token[0])
-    puts "Please input your PIN"
-    pin = gets.chomp
+    puts "Please input your seven-digit PIN"
+    pin = fetch_pin
     full_tokens = get_access_token(request_token[0].split("=")[1], pin)
-    user = { id: full_tokens["user_id"], screen_name: full_tokens["screen_name"] }
-    actok = { token: full_tokens["oauth_token"], token_secret: full_tokens["oauth_token_secret"] }
-    return [user, actok]
+    if full_tokens["screen_name"]
+      user = { id: full_tokens["user_id"], screen_name: full_tokens["screen_name"] }
+      actok = { token: full_tokens["oauth_token"], token_secret: full_tokens["oauth_token_secret"] }
+      return [user, actok]
+    else
+      return "error"
+    end
   end
 
   def get_request_token

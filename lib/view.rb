@@ -4,16 +4,17 @@ class View
     puts "***************************************"
     puts "*Welcome to Delete your Tweet ruby app*"
     puts "***************************************"
-    puts "With this app you'll be able to delete"
-    puts "your Tweets and likes so nobody can fire"
-    puts "you for something stupid you said once"
-    puts "five years ago while drunk and angry."
+    puts "With this app you'll be able to delete your Tweets and likes so nobody can"
+    puts "fire you for something stupid you said once five years ago while drunk and angry."
     puts ""
+    puts "Remember, the best only way to have real privacy is to not leave a paper trail."
     puts ""
   end
 
   def press_enter
+    puts ""
     puts "Please press Enter to continue."
+    puts ""
     loop do
       input = gets
       puts "Press Enter, nothing else" if input != "\n"
@@ -23,7 +24,7 @@ class View
 
   def login
     puts "To delete your tweets we need you to login to your Twitter account"
-    puts "so they app can have access to your data."
+    puts "so the app can have access to your data."
     puts ""
     puts "Twitter doesn't give us your password, don't worry, there's this"
     puts "neat mechanism called OAuth to get access without it."
@@ -38,6 +39,12 @@ class View
   def logged_in(user)
     puts "You are now logged in. Your username is #{user['screen_name']}."
     puts "We will now start fetching your tweets."
+    press_enter
+  end
+
+  def authenticate_failed
+    puts "Seems there was an error logging you in."
+    puts "Please try again"
     press_enter
   end
 
