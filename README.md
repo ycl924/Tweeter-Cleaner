@@ -1,4 +1,4 @@
-# delete_tweets
+# Tweeter Cleaner
 Ruby script to mass-delete data from Twitter
 
 This is a simple Ruby app to delete Tweets, Likes or Direct Messages from Twitter.
