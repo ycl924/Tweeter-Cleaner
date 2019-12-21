@@ -44,6 +44,7 @@ class API_Call
       puts "PIN format is not correct. Please input a seven-digit PIN"
       fetch_pin
     end
+    return pin
   end
 
   def login
@@ -100,7 +101,7 @@ class API_Call
     options = {}
     auth = SimpleOAuth::Header.new(verb.to_s.upcase, url, options, credentials.merge(ignore_extra_keys: true))
     headers = {}
-    headers[:authorization] = auth.t
+    headers[:authorization] = auth.to_s
     return headers
   end
 
@@ -120,16 +121,16 @@ class API_Call
       id_array = to_delete.map { |r| r["id"] }
       return id_array
     else
-      collect(type, time, list, list.last["id"] - 1)
+      collect(type, time, actok, list, list.last["id"] - 1)
     end
   end
 
-  def get_dms(timestamp, list = [], cursor = nil)
+  def get_dms(timestamp, actok, list = [], cursor = nil)
     url = endpoints('dm_list') + "?count=50"
     url += "&cursor=#{cursor}" if cursor
     req = Faraday.new(
       url: url,
-      headers: get_auth(url, 'GET')
+      headers: get_auth(url, 'GET', actok)
       )
     response = JSON.parse(req.get.body)
     if response["errors"]
@@ -147,24 +148,24 @@ class API_Call
     end
   end
 
-  def delete(type, list)
+  def delete(type, list, actok)
     list.each_with_index do |id, i|
       url = endpoints(type+"_d", id)
       req = Faraday.new(
         url: url,
-        headers: get_auth(url, 'POST')
+        headers: get_auth(url, 'POST', actok)
         )
       response = req.post
       puts "deleted item #{i + 1}"
     end
   end
 
-  def delete_dms(list)
+  def delete_dms(list, actok)
     list.each_with_index do |id, i|
       url = endpoints("dm_destroy")
       req = Faraday.new(
         url: url,
-        headers: get_auth(url, 'POST')
+        headers: get_auth(url, 'POST', actok)
         )
       response = req.post
       puts "deleted Direct Message #{i + 1}"

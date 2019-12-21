@@ -37,7 +37,7 @@ class View
   end
 
   def logged_in(user)
-    puts "You are now logged in. Your username is #{user['screen_name']}."
+    puts "You are now logged in. Your username is #{user[:screen_name]}."
     puts "We will now start fetching your tweets."
     press_enter
   end
@@ -59,8 +59,8 @@ class View
 
   def preamble(type)
     puts "First we will gather all your #{type.capitalize} from the Twitter API"
-    puts "请稍后"
-    puts "..."
+    puts "Gathering..."
+    puts "This may take a while if you have a lot. But not more than a few minutes."
     puts ""
   end
 

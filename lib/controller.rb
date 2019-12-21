@@ -58,8 +58,8 @@ end
   end
 
   def list(type)
-    @view.preamble(type)
     time = choose_time
+    @view.preamble(type)
     collection = @api_call.collect(type, time, @token)
     if collection.empty?
       @view.not_found(type)
@@ -71,12 +71,12 @@ end
 
   def delete(type, list)
     @view.delete(type, list.size)
-    @api_call.delete(type, list)
+    @api_call.delete(type, list, @token)
     finish
   end
 
   def delete_dms(list)
-    @view.delete("dms", list.size)
+    @view.delete("dms", list.size, @token)
     @api_call.delete_dms(list)
     finish
   end
@@ -89,7 +89,7 @@ end
     input = @view.dms_preamble
     if input == "\n"
       timestamp = @view.custom_time.to_i * 1000 # Fucking Ruby is in seconds not ms
-      dm_list = @api_call.get_dms(timestamp)
+      dm_list = @api_call.get_dms(timestamp, @token)
       if dm_list.empty? || dm_list == "error"
         @view.not_found("dms")
       else
