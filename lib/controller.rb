@@ -63,9 +63,27 @@ end
     collection = @api_call.collect(type, time, @token)
     if collection.empty?
       @view.not_found(type)
+    elsif collection == "error"
+      @view.api_error
     else
       confirm = @view.confirm(type, collection.size, time)
       delete(type, collection) if confirm == "y"
+    end
+  end
+
+  def list_dms
+    input = @view.dms_preamble
+    if input == "\n"
+      timestamp = @view.custom_time.to_i * 1000 # Fucking Ruby is in seconds not ms
+      dm_list = @api_call.get_dms(timestamp, @token)
+      if dm_list.empty?
+        @view.not_found("dms")
+      elsif dm_list == "error"
+        @view.api_error
+      else
+        confirm = @view.confirm("dms", dm_list.size, Time.at(timestamp / 1000))
+        delete_dms(dm_list) if confirm == "y"
+      end
     end
   end
 
@@ -85,17 +103,5 @@ end
     @view.finished
   end
 
-  def list_dms
-    input = @view.dms_preamble
-    if input == "\n"
-      timestamp = @view.custom_time.to_i * 1000 # Fucking Ruby is in seconds not ms
-      dm_list = @api_call.get_dms(timestamp, @token)
-      if dm_list.empty? || dm_list == "error"
-        @view.not_found("dms")
-      else
-        confirm = @view.confirm("dms", dm_list.size, Time.at(timestamp / 1000))
-        delete_dms(dm_list) if confirm == "y"
-      end
-    end
-  end
+
 end

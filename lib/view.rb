@@ -1,9 +1,10 @@
 class View
 
   def welcome
-    puts "***************************************"
-    puts "*Welcome to Delete your Tweet ruby app*"
-    puts "***************************************"
+    puts "                ***************************************"
+    puts "                *Welcome to Delete your Tweet ruby app*"
+    puts "                ***************************************"
+    puts ""
     puts "With this app you'll be able to delete your Tweets and likes so nobody can"
     puts "fire you for something stupid you said once five years ago while drunk and angry."
     puts ""
@@ -74,6 +75,15 @@ class View
     end
   end
 
+  def api_error
+    puts "Something went wrong with the API, please try again later."
+    puts "Please press Enter to return to the main menu"
+    loop do
+      input = gets
+      puts "Press Enter, nothing else" if input != "\n"
+      break if input == "\n"
+    end
+  end
 
   def confirm(type, number, time)
     puts "You have a total of #{number} #{type} to delete which are older than #{time}."
@@ -127,9 +137,10 @@ class View
 
 
   def dms_preamble
-    puts "As it happens, Direct Messages in Twitter can't be deleted."
+    puts "As it happens, Direct Messages in Twitter can't be really deleted."
     puts "All you can do is delete them from *your* Twitter, but any recipient can still see them, forever."
     puts "Moreover, only DMs up to 30 days old can be deleted at all!"
+    puts ""
     puts "As such it's pretty much pointless, but if you still wanna do it, please press Enter, else, press any other key."
     return gets
   end

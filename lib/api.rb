@@ -40,11 +40,12 @@ class API_Call
 
   def fetch_pin
     pin = gets.chomp
-    if pin.size != 7
+    if pin.size != 7 || !pin.to_i.is_a?(Integer)
       puts "PIN format is not correct. Please input a seven-digit PIN"
       fetch_pin
+    else
+      return pin
     end
-    return pin
   end
 
   def login
@@ -116,6 +117,8 @@ class API_Call
       )
     response = JSON.parse(req.get.body)
     list += response
+    puts "#{list.size} #{type} collected so far."
+    puts ""
     if response.empty?
       to_delete = list.select { |tweet| Time.parse(tweet["created_at"]) < time }
       id_array = to_delete.map { |r| r["id"] }
@@ -134,7 +137,6 @@ class API_Call
       )
     response = JSON.parse(req.get.body)
     if response["errors"]
-      puts "Something went wrong with the API, please try again later."
       return "error"
     else
       list += response["events"]
@@ -156,7 +158,7 @@ class API_Call
         headers: get_auth(url, 'POST', actok)
         )
       response = req.post
-      puts "deleted item #{i + 1}"
+      puts "deleted #{type[0..-2]} #{i + 1}"
     end
   end
 
