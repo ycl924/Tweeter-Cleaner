@@ -1,10 +1,10 @@
-require 'pry-byebug'
 require 'faraday'
 require 'addressable/uri'
 require 'simple_oauth'
 require 'awesome_print'
 require 'time'
 require 'launchy'
+require 'json'
 
 class API_Call
   def api_keys

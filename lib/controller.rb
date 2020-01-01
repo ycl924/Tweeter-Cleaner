@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 require_relative 'view'
 require_relative 'api'
 
